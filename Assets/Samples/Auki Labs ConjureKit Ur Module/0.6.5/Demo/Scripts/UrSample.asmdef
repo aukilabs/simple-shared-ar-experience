@@ -1,0 +1,24 @@
+{
+    "name": "UrSample",
+    "rootNamespace": "",
+    "references": [
+        "Unity.XR.ARFoundation",
+        "Unity.XR.ARSubsystems",
+        "Auki.Util",
+        "UnityEditor.UI",
+        "UnityEngine.UI",
+        "Auki.ConjureKit",
+        "Auki.ConjureKit.Manna",
+        "Auki.ConjureKit.Vikja",
+        "Auki.Ur"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
