@@ -4,7 +4,6 @@ using Auki.ConjureKit;
 using UnityEngine.UI;
 using Auki.ConjureKit.Manna;
 using Auki.Ur;
-using Auki.Util;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using State = Auki.ConjureKit.State;
@@ -52,6 +51,7 @@ public class ConjureKitManager : MonoBehaviour
             "YOUR_APP_SECRET");
 
         _manna = new Manna(_conjureKit);
+        _manna.GetOrCreateFrameFeederComponent().AttachMannaInstance(_manna);
         
         _conjureKit.OnStateChanged += state =>
         {
@@ -122,38 +122,9 @@ public class ConjureKitManager : MonoBehaviour
     
     private void Update()
     {
-        FeedMannaWithVideoFrames();
         _handTracker.Update();
     }
     
-    private void FeedMannaWithVideoFrames()
-    {
-        var imageAcquired = _arCameraManager.TryAcquireLatestCpuImage(out var cpuImage);
-        if (!imageAcquired)
-        {
-            AukiDebug.LogInfo("Couldn't acquire CPU image");
-            return;
-        }
-
-        if (_videoTexture == null) _videoTexture = new Texture2D(cpuImage.width, cpuImage.height, TextureFormat.R8, false);
-
-        var conversionParams = new XRCpuImage.ConversionParams(cpuImage, TextureFormat.R8);
-        cpuImage.ConvertAsync(
-            conversionParams,
-            (status, @params, buffer) =>
-            {
-                _videoTexture.SetPixelData(buffer, 0, 0);
-                _videoTexture.Apply();
-                cpuImage.Dispose();
-
-                _manna.ProcessVideoFrameTexture(
-                    _videoTexture,
-                    arCamera.projectionMatrix,
-                    arCamera.worldToCameraMatrix
-                );
-            }
-        );
-    }
     private void ToggleControlsState(bool interactable)
     {
         if (spawnButton) spawnButton.interactable = interactable;
