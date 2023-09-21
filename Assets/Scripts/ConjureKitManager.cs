@@ -16,35 +16,35 @@ public class ConjureKitManager : MonoBehaviour
 
     [SerializeField] private Text sessionState;
     [SerializeField] private Text sessionID;
-    
+
     [SerializeField] private GameObject cube;
     [SerializeField] private Button spawnButton;
 
     [SerializeField] Button qrCodeButton;
     private bool _qrCodeBool;
-    
+
     private IConjureKit _conjureKit;
     private Manna _manna;
-    
+
     private ARCameraManager _arCameraManager;
     private Texture2D _videoTexture;
-    
-    [SerializeField] private Renderer fingertipLandmark;
+
+    [SerializeField] private GameObject fingertipLandmark;
     private HandTracker _handTracker;
-    private bool _landmarksVisualizeBool = true;
-    
+    private bool _landmarksVisualizeBool = false;
+
     [SerializeField] private AROcclusionManager arOcclusionManager;
     private bool _occlusionBool = true;
 
     [SerializeField] private Transform arSessionOrigin;
-    
+
     private ColorSystem _colorSystem;
     private Dictionary<uint, Renderer> _cubes = new Dictionary<uint, Renderer>();
 
     void Start()
     {
         _arCameraManager = arCamera.GetComponent<ARCameraManager>();
-        
+
         _conjureKit = new ConjureKit(
             arCamera.transform,
             "YOUR_APP_KEY",
@@ -52,7 +52,7 @@ public class ConjureKitManager : MonoBehaviour
 
         _manna = new Manna(_conjureKit);
         _manna.GetOrCreateFrameFeederComponent().AttachMannaInstance(_manna);
-        
+
         _conjureKit.OnStateChanged += state =>
         {
             if (state == State.JoinedSession)
@@ -73,26 +73,26 @@ public class ConjureKitManager : MonoBehaviour
         {
             Debug.Log("OnJoined " + Time.realtimeSinceStartup);
             sessionID.text = session.Id.ToString();
-            
+
             _colorSystem = new ColorSystem(session);
             session.RegisterSystem(_colorSystem, () => Debug.Log("System registered in session"));
             _colorSystem.OnColorComponentUpdated += OnColorComponentUpdated;
         };
 
-        _conjureKit.OnLeft += () =>
+        _conjureKit.OnLeft += (Session session) =>
         {
             sessionID.text = "";
         };
 
         _conjureKit.OnEntityAdded += CreateCube;
         _conjureKit.Connect();
-        
+
         _handTracker = HandTracker.GetInstance();
         _handTracker.SetARSystem(arSession, arCamera, arRaycastManager);
-        
+
         _handTracker.OnUpdate += (landmarks, translations, isRightHand, score) =>
         {
-            if (score[0] > 0)
+            if (score[0] > 0 && _landmarksVisualizeBool)
             {
                 var handPosition = new Vector3(
                     translations[0],
@@ -105,38 +105,37 @@ public class ConjureKitManager : MonoBehaviour
                     landmarks[pointerLandmarkIndex + 1],
                     landmarks[pointerLandmarkIndex + 2]);
 
-                fingertipLandmark.enabled = true;
+                fingertipLandmark.SetActive(true);
 
                 fingertipLandmark.transform.position =
                     arCamera.transform.TransformPoint(handPosition + pointerLandMarkPosition);
             }
             else
             {
-                fingertipLandmark.enabled = false;
+                fingertipLandmark.SetActive(false);
             }
         };
 
         _handTracker.Start();
-        _handTracker.ShowHandMesh();
     }
-    
+
     private void Update()
     {
         _handTracker.Update();
     }
-    
+
     private void ToggleControlsState(bool interactable)
     {
         if (spawnButton) spawnButton.interactable = interactable;
         if (qrCodeButton) qrCodeButton.interactable = interactable;
     }
-    
+
     public void ToggleLighthouse()
     {
         _qrCodeBool = !_qrCodeBool;
         _manna.SetLighthouseVisible(_qrCodeBool);
     }
-    
+
     public void ToggleHandLandmarks()
     {
         _landmarksVisualizeBool = !_landmarksVisualizeBool;
@@ -150,7 +149,7 @@ public class ConjureKitManager : MonoBehaviour
             _handTracker.HideHandMesh();
         }
     }
-    
+
     public void ToggleOcclusion()
     {
         _occlusionBool = !_occlusionBool;
@@ -176,7 +175,7 @@ public class ConjureKitManager : MonoBehaviour
             {
                 // Initialize with white color
                 _colorSystem.SetColor(entity.Id, Color.white);
-                
+
                 CreateCube(entity);
             },
             onError: error => Debug.Log(error));

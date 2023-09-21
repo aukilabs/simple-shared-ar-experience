@@ -12,15 +12,15 @@ public class ColorSystem : SystemBase
 {
     // The unique name of the component
     private const string COLOR_COMPONENT_NAME = "color";
-    
+
     /// <summary>
     /// Triggered when a component data is updated by another participant
     /// </summary>
     public event Action<uint, Color> OnColorComponentUpdated;
-    
+
     // Local Color component data map
     private readonly IDictionary<uint, Color> _entityColorDataMap = new Dictionary<uint, Color>();
-    
+
     public ColorSystem(Session session) : base(session)
     {
     }
@@ -28,37 +28,35 @@ public class ColorSystem : SystemBase
     // The system will be notified when any component in the returned array is updated or removed
     public override string[] GetComponentTypeNames()
     {
-        return new[] {COLOR_COMPONENT_NAME};
+        return new[] { COLOR_COMPONENT_NAME };
     }
 
-    /// <summary>
     /// Broadcast from the server when another participant updates a Color component with new data.
-    /// </summary>
-    /// <param name="components">The updated component(s)</param>
-    public override void Update(IReadOnlyList<EntityComponent> components)
+    public override void Update(IReadOnlyList<(EntityComponent component, bool localChange)> updated)
     {
-        foreach (var c in components)
+        foreach (var (entityComponent, localChange) in updated)
         {
             // Update the local data and notify about the update
-            _entityColorDataMap[c.EntityId] = ByteArrayToColor(c.Data);
-            OnColorComponentUpdated?.Invoke(c.EntityId, _entityColorDataMap[c.EntityId]);
+            _entityColorDataMap[entityComponent.EntityId] = ByteArrayToColor(entityComponent.Data);
+            OnColorComponentUpdated?.Invoke(entityComponent.EntityId, _entityColorDataMap[entityComponent.EntityId]);
         }
+
     }
 
-    /// <summary>
+
     /// Broadcast from server when another participant removes a Color component from an entity
-    /// </summary>
-    /// <param name="components">The removed component(s)</param>
-    public override void Delete(IReadOnlyList<EntityComponent> components)
+    public override void Delete(IReadOnlyList<(EntityComponent component, bool localChange)> deleted)
     {
-        foreach (var c in components)
+        foreach (var (entityComponent, localChange) in deleted)
         {
-            var entity = _session.GetEntity(c.EntityId);
+            var entity = _session.GetEntity(entityComponent.EntityId);
             if (entity == null) continue;
 
             _entityColorDataMap.Remove(entity.Id);
         }
     }
+
+
 
     /// <summary>
     /// Tries to update the Color component data locally and broadcast the update to other participants.
@@ -69,7 +67,7 @@ public class ColorSystem : SystemBase
         // Check if the entity with the given id exists
         var entity = _session.GetEntity(entityId);
         if (entity == null) return false;
-        
+
         // Store the data locally  
         _entityColorDataMap[entityId] = color;
 
@@ -81,8 +79,8 @@ public class ColorSystem : SystemBase
                 COLOR_COMPONENT_NAME,
                 entityId,
                 ColorToByteArray(color),
-                () => {}, 
-                error => Debug.LogError(error) 
+                () => { },
+                error => Debug.LogError(error)
             );
 
             return true;
@@ -91,12 +89,12 @@ public class ColorSystem : SystemBase
         {
             return _session.UpdateComponent(
                 COLOR_COMPONENT_NAME,
-                entityId, 
+                entityId,
                 ColorToByteArray(color)
             );
         }
     }
-    
+
     /// <summary>
     /// Get the local Color component data
     /// </summary>
@@ -104,7 +102,7 @@ public class ColorSystem : SystemBase
     {
         if (_session.GetEntity(entityId) == null || !_entityColorDataMap.ContainsKey(entityId))
             return Color.clear;
-        
+
         return _entityColorDataMap[entityId];
     }
 

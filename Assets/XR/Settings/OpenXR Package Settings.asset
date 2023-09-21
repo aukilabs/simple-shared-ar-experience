@@ -57,7 +57,7 @@ MonoBehaviour:
   - {fileID: -8101322208352979800}
   - {fileID: 6167948688254422577}
   - {fileID: 8671239639507115741}
-  - {fileID: 4584072006512328063}
+  - {fileID: 4319594829828064151}
   - {fileID: 1296694086516285800}
   - {fileID: 6006961224806851559}
   - {fileID: 6965645897020754483}
@@ -122,7 +122,7 @@ MonoBehaviour:
   - {fileID: -2217875246939605132}
   - {fileID: -7750088023760407639}
   - {fileID: 2626111998127129118}
-  - {fileID: -4557772282192299409}
+  - {fileID: 980459168186540912}
   - {fileID: -1053445564535314905}
   - {fileID: -390082779584140936}
   - {fileID: 1370416567481454082}
@@ -251,6 +251,26 @@ MonoBehaviour:
   - {fileID: 3496195317484137221}
   - {fileID: 8943871590191952588}
   - {fileID: -6668493926897972840}
+--- !u!114 &980459168186540912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4b862ee14fb479fbfe5fffe655d3ed3, type: 3}
+  m_Name: MetaQuestTouchProControllerProfile Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Meta Quest Touch Pro Controller Profile
+  version: 0.0.1
+  featureIdInternal: com.unity.openxr.feature.input.metaquestpro
+  openxrExtensionStrings: XR_FB_touch_controller_pro
+  company: Unity
+  priority: 0
+  required: 0
 --- !u!114 &1296694086516285800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +367,26 @@ MonoBehaviour:
   features: []
   m_renderMode: 1
   m_depthSubmissionMode: 0
+--- !u!114 &4319594829828064151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4b862ee14fb479fbfe5fffe655d3ed3, type: 3}
+  m_Name: MetaQuestTouchProControllerProfile Android
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Meta Quest Touch Pro Controller Profile
+  version: 0.0.1
+  featureIdInternal: com.unity.openxr.feature.input.metaquestpro
+  openxrExtensionStrings: XR_FB_touch_controller_pro
+  company: Unity
+  priority: 0
+  required: 0
 --- !u!114 &4584072006512328063
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "com.aukilabs.unity.conjurekit": "0.5.51",
-    "com.aukilabs.unity.integration.arfoundation": "0.6.34",
-    "com.aukilabs.unity.manna": "0.6.34",
+    "com.aukilabs.unity.conjurekit": "0.6.31",
+    "com.aukilabs.unity.integration.arfoundation": "0.6.35",
+    "com.aukilabs.unity.manna": "0.6.58",
     "com.aukilabs.unity.ur": "0.6.5",
     "com.unity.collab-proxy": "2.0.4",
     "com.unity.feature.ar": "1.0.0",
