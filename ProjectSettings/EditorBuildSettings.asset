@@ -6,11 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Samples/Auki Labs ConjureKit Ur Module/0.6.5/Demo/Scenes/Main.unity
+    guid: c46b46c87072e424b92b69d757143778
   m_configObjects:
-    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: bcf4b1736e2974497ada7bf2d87ff9e3, type: 2}
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: b3397aa2d86bb49139580ed291c873de, type: 2}
-    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 1aadd0a690f964d89a882566a0821b07, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: de557a10449294156962b5eca95b8014, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: d239bdaeac62b491b93f6612a22db302, type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 9c24240aceebb4303887c4dd18b39053, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 828f1efe3431841c193b997ed1f30909, type: 2}
